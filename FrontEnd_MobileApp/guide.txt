@@ -1,0 +1,38 @@
+run file - npx expo start 
+============================================================
+# Update all packages to compatible versions
+expo install expo-linking@~7.1.7 expo-router@~5.1.5 expo-splash-screen@~0.30.10 react-native@0.79.5
+
+# Or update them individually
+expo install expo-linking
+expo install expo-router
+expo install expo-splash-screen
+expo install react-native
+
+==========================================================
+issue----(0 , _secureStorage.get) is not a function
+
+keep hooks and utils as it is to stop this issue 
+answer ----- _secureStorage.get is being called as a function, 
+but it's likely undefined or not properly imported. Let me help you fix this issue.
+
+==============================================================
+in the case of route to login page every time make changes in other pages  means ----
+commenting down the intermediate files in the function in Header file - so it wont auto route to login page again
+useEffect(() => {
+    // const checkToken = async () => {
+    //   const token = await get("token");
+    //   if (!token) {
+    //     router.push("/Authentication/login");
+    //   }
+    // };
+    // checkToken();
+
+    // Update immediately
+    updateDateTime();
+
+    // Update every second for real-time seconds
+    const interval = setInterval(updateDateTime, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
