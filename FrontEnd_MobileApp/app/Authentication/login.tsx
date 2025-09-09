@@ -171,21 +171,43 @@ const Login: React.FC = () => {
         <Text style={[styles.title, { color: theme.colors.text }]}>Login</Text>
         <View style={styles.form}>
           <TextInput
-            style={[styles.inputs, { color: theme.colors.text }]}
+            style={[
+              styles.input,
+              {
+                color: theme.colors.text,
+                borderColor: theme.colors.text,
+                borderWidth: 1,
+                borderRadius: 10,
+              },
+            ]}
             placeholder="Email_Address"
-            placeholderTextColor="rgb(17, 173, 173)"
+            placeholderTextColor="rgb(173, 173, 173)"
             value={email}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            textContentType="emailAddress"
             onChangeText={(value) => setEmail(value.trim())}
           />
           <TextInput
-            style={[styles.inputs, { color: theme.colors.text }]}
+            style={[styles.input, { color: theme.colors.text,
+             borderWidth: 1,
+             borderRadius: 10,
+             padding :12 , 
+             borderColor: theme.colors.text,
+
+             }]}
             placeholder="Password"
             placeholderTextColor="rgb(173, 173, 173)"
             value={password}
+            secureTextEntry={true}
+            autoCapitalize="none"
+            autoCorrect={false}
+            textContentType="password"
             onChangeText={(value) => setPassword(value.trim())}
           />
           <TouchableOpacity onPress={handleLogin} style={styles.login}>
-            <Text style={styles.text}>LOGIN</Text>
+            <Text style={styles.loginButtonText}>LOGIN</Text>
           </TouchableOpacity>
           {/* <Text style={styles.OR}>OR</Text>
                     <TouchableOpacity style={styles.googleLogin}>
@@ -201,82 +223,121 @@ const Login: React.FC = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: -40,
+    padding: 20,
     backgroundColor: "#E9967A",
   },
   formContainer: {
-    width: "80%",
-    borderWidth: 2,
-    borderColor: "#607F90",
-    borderRadius: 20,
-    padding: 10,
-    color: "#607F90",
+    width: "100%",
+    maxWidth: 400,
+    borderRadius: 15,
+    padding: 25,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   title: {
     textAlign: "center",
     fontSize: 30,
     marginBottom: 20,
     color: "rgb(232, 232, 232)",
+    fontWeight: "bold",
   },
-  form: {},
-  inputs: {
+  form: {
+    marginBottom: 15,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 15,
     borderWidth: 1,
     borderColor: "#96FCDF",
-    borderRadius: 5,
-    textAlign: "center",
-    marginBottom: 12,
-    padding: 10,
-    width: "100%",
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+  },
+  inputIcon: {
+    marginRight: 10,
+    color: "#16FCDF",
+  },
+  input: {
+    flex: 1,
+    padding: 12,
     color: "#16FCDF",
     fontSize: 16,
   },
+  login: {
+    backgroundColor: "#2e7d32",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  loginButtonDisabled: {
+    backgroundColor: "#cccccc",
+    opacity: 0.7,
+  },
+  loginButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
   already: {
-    marginTop: 20,
     textAlign: "center",
     marginBottom: 10,
+    fontSize: 14,
     color: "#36FCDF",
   },
   register: {
-    color: "#F6FCDF",
-    textAlign: "center",
-    padding: 10,
-    marginBottom: 5,
     backgroundColor: "#497699",
-    borderRadius: 5,
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
   },
-  login: {
+  registerText: {
     color: "#F6FCDF",
-    textAlign: "center",
-    padding: 10,
-    marginBottom: 5,
-    backgroundColor: "#497699",
-    borderRadius: 5,
-  },
-
-  text: {
     fontWeight: "bold",
-    textAlign: "center",
-  },
-  googleLoginText: {
-    fontWeight: "bold",
-    textAlign: "center",
-    fontSize: 15,
+    fontSize: 16,
   },
   googleLogin: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    flexDirection: "row",
-    gap: 10,
-    marginTop: 20,
-    padding: 10,
     backgroundColor: "#F6FCDF",
-    borderRadius: 5,
+    padding: 12,
+    borderRadius: 10,
+    marginTop: 15,
+    gap: 10,
+  },
+  googleLoginText: {
+    color: "#000",
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  divider: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 15,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#96FCDF",
+    opacity: 0.5,
+  },
+  dividerText: {
+    marginHorizontal: 10,
+    color: "#36FCDF",
+    fontSize: 14,
   },
 });
 

@@ -53,12 +53,12 @@ const Footer: React.FC = () => {
       </View>
     <View style={active == "Profile" ? styles.footerElementActive : styles.footerElement}>
       <TouchableOpacity onPress={() => {
-        router.push("Components/Safety/Safety");
+        router.push("Components/Statics/Statistics");
         setActive("Profile");
       }}>
-        <Ionicons name="flask" size={24} color={theme.colors.text} style={styles.footerIcon}/>
+        <Ionicons name="stats-chart" size={24} color={theme.colors.text} style={styles.footerIcon}/>
       </TouchableOpacity>
-      <Text style={[styles.footerText, {color: theme.colors.text}]}>Safety</Text>
+      <Text style={[styles.footerText, {color: theme.colors.text}]}>Stats</Text>
     </View>
   </View>
 );
