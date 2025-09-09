@@ -44,7 +44,7 @@ const Footer: React.FC = () => {
 
       <View style={active == "Plant" ? styles.footerElementActive : styles.footerElement}>
         <TouchableOpacity onPress={() => {
-          router.push("Components/Plant/Plant");
+          router.push("Components/GasData/GasData");
           setActive("Plant");
         }}>
           <Ionicons name="nuclear" size={24} color={theme.colors.text} style={styles.footerIcon}/>
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
       </View>
     <View style={active == "Profile" ? styles.footerElementActive : styles.footerElement}>
       <TouchableOpacity onPress={() => {
-        router.push("Components/Profile/Profile");
+        router.push("Components/Safety/Safety");
         setActive("Profile");
       }}>
         <Ionicons name="flask" size={24} color={theme.colors.text} style={styles.footerIcon}/>
