@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Gas Detection System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3') center/cover no-repeat;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            margin-top: 60px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 1.5s ease-in;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            animation: fadeIn 2s ease-in;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            animation: pulse 2s infinite;
+        }
+        
+        .btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            margin: 10px auto;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card-title {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-title i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        .sensor-visual {
+            height: 200px;
+            background: linear-gradient(45deg, #3498db, #2c3e50);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sensor-animation {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #e74c3c, #c0392b);
+            position: relative;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 30px #e74c3c;
+        }
+        
+        .gas-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            opacity: 0;
+        }
+        
+        .system-diagram {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .diagram-container {
+            position: relative;
+            height: 400px;
+            margin: 2rem 0;
+        }
+        
+        .diagram-component {
+            position: absolute;
+            background: white;
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            padding: 1rem;
+            width: 180px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .diagram-component:hover {
+            transform: scale(1.05);
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .sensor-node {
+            top: 50px;
+            left: 50px;
+        }
+        
+        .microcontroller {
+            top: 50px;
+            right: 50px;
+        }
+        
+        .cloud-server {
+            top: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .alert-system {
+            bottom: 50px;
+            left: 50px;
+        }
+        
+        .user-device {
+            bottom: 50px;
+            right: 50px;
+        }
+        
+        .connection {
+            position: absolute;
+            background: var(--secondary);
+            height: 3px;
+            transform-origin: 0 0;
+        }
+        
+        .robot-model {
+            text-align: center;
+            margin: 3rem 0;
+        }
+        
+        .robot {
+            width: 200px;
+            height: 300px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .robot-head {
+            width: 120px;
+            height: 100px;
+            background: var(--primary);
+            border-radius: 20px 20px 0 0;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .robot-eye {
+            width: 30px;
+            height: 30px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: absolute;
+            top: 30px;
+            animation: glow 2s infinite;
+        }
+        
+        .robot-eye.left {
+            left: 20px;
+        }
+        
+        .robot-eye.right {
+            right: 20px;
+        }
+        
+        .robot-body {
+            width: 150px;
+            height: 150px;
+            background: var(--secondary);
+            border-radius: 0 0 20px 20px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .robot-sensor {
+            width: 40px;
+            height: 40px;
+            background: var(--dark);
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            animation: spin 4s infinite linear;
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+        
+        @keyframes glow {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+        
+        @keyframes spin {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .diagram-container {
+                height: 600px;
+            }
+            
+            .diagram-component {
+                width: 150px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-gas-pump"></i>
+                <span>GasGuard Systems</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#technology">Technology</a></li>
+                <li><a href="#system">System Design</a></li>
+                <li><a href="#applications">Applications</a></li>
+                <li><a href="#demo">Demo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>Advanced Gas Detection System</h1>
+        <p>Real-time monitoring for industrial safety and environmental protection</p>
+        <a href="#technology" class="btn">Explore Technology</a>
+    </div>
+
+    <section id="overview">
+        <h2 class="section-title">System Overview</h2>
+        <p>Gas detection systems play a critical role in ensuring safety in various environments by monitoring the presence of hazardous gases. These systems are widely used in industrial plants, refineries, chemical manufacturing facilities, and urban areas to detect combustible, toxic, and oxygen-depleting gases.</p>
+        
+        <div class="card-container">
+            <div class="card">
+                <div class="sensor-visual">
+                    <div class="sensor-animation"></div>
+                    <div class="gas-particles" id="gasParticles"></div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title"><i class="fas fa-bullseye"></i> Aim and Importance</h3>
+                    <p>The aim is to develop a real-time gas detection system for industrial applications and air pollution monitoring. The system addresses issues related to the cost, coverage, and accuracy of existing gas detection devices.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="sensor-visual">
+                    <div class="sensor-animation" style="background: radial-gradient(circle, #3498db, #2980b9); box-shadow: 0 0 30px #3498db;"></div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title"><i class="fas fa-cogs"></i> How the System Works</h3>
+                    <p>The system uses gas sensors to continuously monitor the presence of gases. These sensors detect gas concentrations by undergoing chemical or resistance changes when exposed to specific gases.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="technology">
+        <h2 class="section-title">Sensor Technology</h2>
+        
+        <div class="card-container">
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title"><i class="fas fa-bolt"></i> Electrochemical Sensors</h3>
+                    <p>These sensors detect gas concentration by measuring the current generated from an electrochemical reaction. They consist of three electrodes: working (sensing), counter, and reference electrodes, immersed in an electrolyte.</p>
+                    <ul>
+                        <li>High specificity and accuracy</li>
+                        <li>Cost-effective with low interference</li>
+                        <li>Require temperature compensation</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title"><i class="fas fa-fire"></i> Metal Oxide Sensors</h3>
+                    <p>These sensors detect gases by measuring changes in electrical resistance. Oxygen molecules adsorb on the sensor surface and capture electrons, increasing resistance.</p>
+                    <ul>
+                        <li>Durable and cost-effective</li>
+                        <li>Commonly used for combustible gases</li>
+                        <li>Affected by humidity and temperature</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="system">
+        <h2 class="section-title">System Architecture</h2>
+        
+        <div class="system-diagram">
+            <h3>Hardware and Communication Setup</h3>
+            <p>The system uses ESP32 microcontrollers as slave devices to interface with sensors, with a master ESP32 managing the display dashboard and overall coordination.</p>
+            
+            <div class="diagram-container">
+                <div class="diagram-component sensor-node">
+                    <i class="fas fa-sensor fa-2x"></i>
+                    <h4>Gas Sensors</h4>
+                    <p>Electrochemical & Metal Oxide</p>
+                </div>
+                
+                <div class="diagram-component microcontroller">
+                    <i class="fas fa-microchip fa-2x"></i>
+                    <h4>ESP32 Microcontrollers</h4>
+                    <p>Data collection & processing</p>
+                </div>
+                
+                <div class="diagram-component cloud-server">
+                    <i class="fas fa-cloud fa-2x"></i>
+                    <h4>Cloud Server</h4>
+                    <p>Centralized data storage</p>
+                </div>
+                
+                <div class="diagram-component alert-system">
+                    <i class="fas fa-bell fa-2x"></i>
+                    <h4>Alert Systems</h4>
+                    <p>Buzzer & GSM notifications</p>
+                </div>
+                
+                <div class="diagram-component user-device">
+                    <i class="fas fa-mobile-alt fa-2x"></i>
+                    <h4>User Devices</h4>
+                    <p>Real-time monitoring</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="applications">
+        <h2 class="section-title">Applications</h2>
+        
+        <div class="card-container">
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title"><i class="fas fa-industry"></i> Industrial Use</h3>
+                    <p>Gas detection systems are crucial in various industrial sectors for ensuring safety and operational efficiency. They continuously monitor for toxic, flammable, and oxygen-related gases to prevent accidents.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title"><i class="fas fa-wind"></i> Air Quality Monitoring</h3>
+                    <p>For air quality monitoring, gas detection systems assess pollutants such as carbon monoxide, nitrogen oxides, sulfur oxides, and particulate matter in urban and industrial areas.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="robot-model">
+            <h3>Model Robot for Gas Detection</h3>
+            <div class="robot">
+                <div class="robot-head">
+                    <div class="robot-eye left"></div>
+                    <div class="robot-eye right"></div>
+                </div>
+                <div class="robot-body">
+                    <div class="robot-sensor">
+                        <i class="fas fa-sensor"></i>
+                    </div>
+                </div>
+            </div>
+            <p>Our model robot equipped with multiple gas sensors for autonomous environmental monitoring</p>
+        </div>
+    </section>
+
+    <section id="demo">
+        <h2 class="section-title">Live Demo</h2>
+        
+        <div class="system-diagram">
+            <h3>Real-Time Monitoring Simulation</h3>
+            <p>The gas detection system provides continuous live data streams from sensors deployed across multiple locations, enabling immediate assessment of air quality and potential hazards.</p>
+            
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-content">
+                        <h4>Hydrogen (H₂) Levels</h4>
+                        <div class="sensor-visual" style="height: 100px;">
+                            <div class="sensor-animation" style="width: 50px; height: 50px;"></div>
+                        </div>
+                        <p>Current reading: 45 ppm</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <h4>Carbon Monoxide (CO) Levels</h4>
+                        <div class="sensor-visual" style="height: 100px;">
+                            <div class="sensor-animation" style="width: 50px; height: 50px; background: radial-gradient(circle, #3498db, #2980b9); box-shadow: 0 0 20px #3498db;"></div>
+                        </div>
+                        <p>Current reading: 28 ppm</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2023 GasGuard Systems | Advanced Gas Detection Technology</p>
+        <p>Designed for safety and environmental protection</p>
+    </footer>
+
+    <script>
+        // Create gas particles animation
+        function createParticles() {
+            const container = document.getElementById('gasParticles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random properties
+                const size = Math.random() * 10 + 5;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 3 + 3;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Add floating animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0% { transform: translateY(0) translateX(0); opacity: 0; }
+                50% { opacity: 0.8; }
+                100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Initialize when page loads
+        window.addEventListener('load', function() {
+            createParticles();
+            
+            // Animate diagram components on scroll
+            const diagramComponents = document.querySelectorAll('.diagram-component');
+            diagramComponents.forEach(comp => {
+                comp.style.opacity = '0';
+                comp.style.transition = 'opacity 1s, transform 0.5s';
+            });
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        diagramComponents.forEach((comp, index) => {
+                            setTimeout(() => {
+                                comp.style.opacity = '1';
+                            }, index * 200);
+                        });
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            observer.observe(document.querySelector('.diagram-container'));
+        });
+    </script>
+</body>
+</html>
